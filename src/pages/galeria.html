@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Galeria · André LCF · Fotografia de Aviação</title>
+    <meta name="description" content="Galeria de fotografias de aviação com filtros por categoria e fabricante e pesquisa por modelo, companhia aérea, matrícula ou aeroporto.">
+    <meta name="author" content="André LCF">
+    <meta name="theme-color" content="#080B10">
+    <meta name="color-scheme" content="dark">
+    <meta name="robots" content="index, follow">
+    <!-- --- DOMÍNIO DEFINITIVO: DESCOMENTE E AJUSTE AS LINHAS ABAIXO ---
+    <link rel="canonical" href="https://SEU-DOMINIO/src/pages/galeria.html">
+    <meta property="og:url" content="https://SEU-DOMINIO/src/pages/galeria.html">
+    <meta property="og:image" content="https://SEU-DOMINIO/src/assets/images/hero/og-image.jpg">
+    -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="André LCF · Fotografia de Aviação">
+    <meta property="og:title" content="Galeria · André LCF · Fotografia de Aviação">
+    <meta property="og:description" content="Aeronaves comerciais, executivas, militares e históricas, aeroportos e eventos aeronáuticos.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../styles/estilo-global.css">
+    <script src="../scripts/configuracao.js" defer></script>
+    <script src="../scripts/dados-galeria.js" defer></script>
+    <script src="../scripts/principal.js" defer></script>
+    </head>
+    <body data-pagina="galeria" data-base="../../">
+    <a class="link-pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="cabecalho-site" data-cabecalho>
+        <div class="conteiner cabecalho-site__interno">
+        <a class="marca" href="../../index.html" aria-label="André LCF, fotografia de aviação: página inicial">
+            <svg class="marca__simbolo" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+            <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+            <path d="M8.75 22.8 31.25 11.25 19.06 21.25Z" fill="#F5C542"/>
+            <path d="M19.06 21.25 31.25 11.25 20.6 30.6Z" fill="#159447"/>
+            <path d="M19.06 21.25 16.25 24.7 20.6 30.6Z" fill="#2589FF"/>
+            </svg>
+            <span class="marca__texto">
+            <span class="marca__nome" data-nome-fotografo>André LCF</span>
+            <span class="marca__legenda">Fotografia de Aviação</span>
+            </span>
+        </a>
+
+        <button class="alternar-menu" type="button" aria-expanded="false" aria-controls="navegacao-site" data-alternar-menu>
+            <span class="alternar-menu__barras" aria-hidden="true"></span>
+            <span class="visualmente-oculto" data-rotulo-alternar-menu>Abrir menu</span>
+        </button>
+
+        <nav class="navegacao-site" id="navegacao-site" aria-label="Principal" data-navegacao>
+            <ul class="navegacao-site__lista">
+            <li><a class="navegacao-site__link" href="../../index.html" data-link-navegacao="inicio">Início</a></li>
+            <li><a class="navegacao-site__link" href="galeria.html" data-link-navegacao="galeria">Galeria</a></li>
+            <li><a class="navegacao-site__link" href="licenca.html" data-link-navegacao="licenca">Licença</a></li>
+            <li><a class="navegacao-site__link" href="faq.html" data-link-navegacao="faq">FAQ</a></li>
+            </ul>
+            <p class="navegacao-site__rodape">Fotografia de aviação · Brasil</p>
+        </nav>
+        </div>
+        <div class="cabecalho-site__progresso" data-progresso-rolagem aria-hidden="true"></div>
+    </header>
+
+    <main id="conteudo">
+        <section class="cabecalho-pagina" aria-labelledby="titulo-pagina">
+        <div class="conteiner cabecalho-pagina__interno">
+            <nav aria-label="Trilha de navegação">
+            <ol class="trilha-navegacao">
+                <li><a href="../../index.html">Início</a></li>
+                <li><span aria-current="page">Galeria</span></li>
+            </ol>
+            </nav>
+            <p class="sobretitulo">Acervo fotográfico</p>
+            <h1 class="cabecalho-pagina__titulo" id="titulo-pagina">Galeria de <span class="texto-gradiente">aviação</span></h1>
+            <p class="cabecalho-pagina__chamada">Pesquise por modelo, companhia aérea, matrícula, fabricante ou aeroporto e filtre por categoria. Selecione uma fotografia para vê-la ampliada com todos os detalhes do registro.</p>
+        </div>
+        </section>
+
+        <section class="secao-galeria" aria-label="Fotografias">
+        <div class="conteiner">
+            <div class="barra-ferramentas-galeria" data-barra-ferramentas-galeria hidden>
+            <div class="barra-ferramentas-galeria__linha">
+                <div class="campo">
+                <label class="campo__rotulo" for="pesquisa-galeria">Pesquisar fotografias</label>
+                <div class="campo__controle">
+                    <svg class="icone campo__icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"/></svg>
+                    <input class="entrada entrada--com-icone" id="pesquisa-galeria" type="search" placeholder="Ex.: A320, Embraer, PR-…" autocomplete="off" spellcheck="false" aria-describedby="dica-pesquisa-galeria" data-pesquisa-galeria>
+                </div>
+                <span class="visualmente-oculto" id="dica-pesquisa-galeria">Os resultados são atualizados automaticamente enquanto você digita.</span>
+                </div>
+                <div class="campo">
+                <label class="campo__rotulo" for="fabricante-galeria">Fabricante</label>
+                <select class="selecao" id="fabricante-galeria" data-fabricante-galeria>
+                    <option value="">Todos os fabricantes</option>
+                </select>
+                </div>
+                <button class="botao botao--fantasma botao--pequeno" type="button" data-limpar-galeria data-limpar-galeria-barra hidden>Limpar filtros</button>
+            </div>
+            <div class="barra-filtros" role="group" aria-label="Filtrar por categoria" data-filtros-galeria></div>
+            </div>
+
+            <!-- --- AVISO PROVISÓRIO: REMOVA ESTE BLOCO QUANDO AS FOTOGRAFIAS REAIS FOREM CADASTRADAS --- -->
+            <p class="aviso aviso-galeria">
+            <svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4l9 16H3zM12 10v4M12 17.5v.01"/></svg>
+            <span><strong>Conteúdo de demonstração.</strong> As imagens e os metadados exibidos são ilustrações provisórias, não registros reais. Eles serão substituídos pelas fotografias do acervo.</span>
+            </p>
+
+            <div class="metadados-galeria">
+            <p class="status-galeria" role="status" aria-live="polite" data-status-galeria></p>
+            </div>
+
+            <ul class="grade-galeria" data-grade-galeria aria-label="Resultados da galeria"></ul>
+
+            <div class="estado-vazio" data-vazio-galeria hidden>
+            <span class="estado-vazio__icone" aria-hidden="true"><svg class="icone" viewBox="0 0 24 24" focusable="false"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"/></svg></span>
+            <h2 class="estado-vazio__titulo" data-titulo-vazio-galeria>Nenhuma fotografia encontrada</h2>
+            <p class="estado-vazio__texto" data-texto-vazio-galeria>Tente outro termo de pesquisa, escolha outra categoria ou limpe os filtros para ver todas as fotografias.</p>
+            <button class="botao botao--primario" type="button" data-limpar-galeria>Limpar filtros</button>
+            </div>
+
+            <noscript>
+            <p class="aviso aviso--informativo">A galeria utiliza JavaScript para exibir, filtrar e ampliar as fotografias. Ative-o no navegador para navegar pelo acervo.</p>
+            </noscript>
+        </div>
+        </section>
+    </main>
+
+    <footer class="rodape-site">
+        <div class="conteiner rodape-site__grade">
+        <div>
+            <a class="marca" href="../../index.html" aria-label="André LCF, fotografia de aviação: página inicial">
+            <svg class="marca__simbolo" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+                <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+                <path d="M8.75 22.8 31.25 11.25 19.06 21.25Z" fill="#F5C542"/>
+                <path d="M19.06 21.25 31.25 11.25 20.6 30.6Z" fill="#159447"/>
+                <path d="M19.06 21.25 16.25 24.7 20.6 30.6Z" fill="#2589FF"/>
+            </svg>
+            <span class="marca__texto">
+                <span class="marca__nome" data-nome-fotografo>André LCF</span>
+                <span class="marca__legenda">Fotografia de Aviação</span>
+            </span>
+            </a>
+            <p class="rodape-site__sobre">Fotografia de aviação com identidade brasileira: aeronaves, aeroportos e eventos registrados com cuidado técnico e artístico.</p>
+        </div>
+
+        <nav aria-label="Rodapé">
+            <h2 class="rodape-site__titulo">Navegação</h2>
+            <ul class="links-rodape">
+            <li><a href="../../index.html" data-link-navegacao="inicio">Início</a></li>
+            <li><a href="galeria.html" data-link-navegacao="galeria">Galeria</a></li>
+            <li><a href="licenca.html" data-link-navegacao="licenca">Licença de uso</a></li>
+            <li><a href="faq.html" data-link-navegacao="faq">Perguntas frequentes</a></li>
+            </ul>
+        </nav>
+
+        <div>
+            <h2 class="rodape-site__titulo">Redes sociais</h2>
+            <ul class="links-rodape" data-lista-redes-sociais hidden></ul>
+            <p class="nota-rodape" data-vazio-redes-sociais>Perfis em configuração.</p>
+        </div>
+
+        <div>
+            <h2 class="rodape-site__titulo">Contato</h2>
+            <a class="contato-rodape" href="mailto:contato@example.com" data-email-contato data-texto-contato>contato@example.com</a>
+        </div>
+        </div>
+
+        <div class="conteiner rodape-site__inferior">
+        <p>© <span data-ano-atual>2026</span> <span data-nome-fotografo>André LCF</span>. Fotografias protegidas por direitos autorais · <a href="licenca.html">Licença de uso</a></p>
+        <button class="voltar-ao-topo" type="button" data-voltar-ao-topo>
+            Voltar ao topo
+            <svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+        </button>
+        </div>
+    </footer>
+    </body>
+</html>
