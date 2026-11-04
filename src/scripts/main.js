@@ -1,7 +1,7 @@
+// --- MÓDULO PRINCIPAL DO SITE ---
 (function () {
     "use strict";
 
-    /* --- CONTEXTO E DADOS --- */
     const ESPACO_NOMES_SVG = "http://www.w3.org/2000/svg";
     const raiz = document.documentElement;
     const corpo = document.body;
@@ -45,15 +45,17 @@
         ["data", "Data"],
     ];
 
-    /* --- UTILITÁRIOS --- */
+    // --- SELECIONA O PRIMEIRO ELEMENTO QUE CORRESPONDE AO SELETOR ---
     function selecionarElemento(seletor, contexto = document) {
         return contexto.querySelector(seletor);
     }
 
+    // --- SELECIONA TODOS OS ELEMENTOS QUE CORRESPONDEM AO SELETOR E RETORNA UM ARRAY ---
     function selecionarTodosElementos(seletor, contexto = document) {
         return Array.from(contexto.querySelectorAll(seletor));
     }
 
+    // --- VERIFICA SE O VALOR ESTÁ PREENCHIDO (NÃO NULO E NÃO VAZIO) ---
     function possuiValor(valor) {
         if (valor === null || valor === undefined) {
             return false;
@@ -61,6 +63,7 @@
         return typeof valor === "string" ? valor.trim().length > 0 : true;
     }
 
+    // --- NORMALIZA O TEXTO REMOVENDO ACENTOS E ESPAÇOS EXTRAS E CONVERTENDO PARA MINÚSCULAS ---
     function normalizarTexto(valor) {
         return String(valor ?? "")
             .normalize("NFD")
@@ -69,14 +72,17 @@
             .trim();
     }
 
+    // --- CONVERTE O TEXTO EM UMA LISTA DE TERMOS NORMALIZADOS PARA PESQUISA ---
     function converterEmTermosPesquisa(valor) {
         return normalizarTexto(valor).split(/\s+/).filter(Boolean);
     }
 
+    // --- RETORNA A QUANTIDADE ACOMPANHADA DA FORMA SINGULAR OU PLURAL ---
     function pluralizar(quantidade, singular, formaPlural) {
         return `${quantidade} ${quantidade === 1 ? singular : formaPlural}`;
     }
 
+    // --- ATRASA A EXECUÇÃO DE UMA FUNÇÃO ATÉ QUE CESSEM AS CHAMADAS ---
     function atrasarExecucao(funcaoRetorno, atraso) {
         let temporizador;
         return (...argumentosRecebidos) => {
@@ -85,10 +91,12 @@
         };
     }
 
+    // --- VERIFICA SE O VALOR É UM NÚMERO FINITO E POSITIVO ---
     function ehNumeroPositivo(valor) {
         return Number.isFinite(Number(valor)) && Number(valor) > 0;
     }
 
+    // --- VERIFICA SE A URL É VÁLIDA E UTILIZA O PROTOCOLO HTTPS ---
     function ehUrlExternaSegura(valor) {
         try {
             return new URL(valor).protocol === "https:";
@@ -97,6 +105,7 @@
         }
     }
 
+    // --- RESOLVE O CAMINHO COMPLETO DA IMAGEM ---
     function resolverImagem(caminho) {
         if (!possuiValor(caminho)) {
             return "";
@@ -109,14 +118,17 @@
         return BASE_IMAGENS + valor.replace(/^\/+/, "");
     }
 
+    // --- OBTÉM O RÓTULO DA CATEGORIA A PARTIR DO IDENTIFICADOR ---
     function obterRotuloCategoria(identificador) {
         return MAPA_CATEGORIAS.get(identificador)?.rotulo || "Sem categoria";
     }
 
+    // --- DEFINE O COMPORTAMENTO DA ROLAGEM CONFORME A PREFERÊNCIA DE MOVIMENTO REDUZIDO ---
     function comportamentoRolagem() {
         return movimentoReduzido.matches ? "auto" : "smooth";
     }
 
+    // --- CRIA UM ELEMENTO HTML COM CLASSE, TEXTO, ATRIBUTOS, DADOS E FILHOS ---
     function criarElemento(etiqueta, opcoes = {}, filhos = []) {
         const elemento = document.createElement(etiqueta);
         const { classe, texto, atributos, conjuntoDados } = opcoes;
@@ -144,6 +156,7 @@
         return elemento;
     }
 
+    // --- CRIA UM ÍCONE SVG A PARTIR DO NOME INFORMADO ---
     function criarIcone(nome, classe = "icone") {
         const svg = document.createElementNS(ESPACO_NOMES_SVG, "svg");
 
@@ -168,6 +181,7 @@
     });
     const formatadorMes = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric", timeZone: "UTC" });
 
+    // --- FORMATA A DATA NO PADRÃO BRASILEIRO ---
     function formatarData(valor) {
         if (!possuiValor(valor)) { 
             return "";
@@ -188,6 +202,7 @@
         return (dia ? formatadorDia : formatadorMes).format(data);
     }
 
+    // --- VALIDA, REMOVE DUPLICADOS E PREPARA AS FOTOGRAFIAS COM ÍNDICE DE PESQUISA ---
     function prepararFotografias(lista) {
         if (!Array.isArray(lista)) {
             return [];
@@ -233,6 +248,7 @@
             });
     }
 
+    // --- CRIA O ELEMENTO DE IMAGEM DA FOTOGRAFIA ---
     function criarImagemFotografia(fotografia, classe, { carregamentoImediato = false } = {}) {
         const usarMiniatura = possuiValor(fotografia.miniatura);
         const atributos = {
@@ -251,6 +267,7 @@
         return criarElemento("img", { classe, atributos, conjuntoDados });
     }
 
+    // --- MARCA O ELEMENTO ALVO COMO CARREGADO QUANDO A IMAGEM TERMINAR DE CARREGAR ---
     function acompanharCarregamentoImagem(imagem, alvo) {
         const marcarCarregada = () => alvo.classList.add("esta-carregado");
         if (imagem.complete && imagem.naturalWidth > 0) {
@@ -260,6 +277,7 @@
         }
     }
 
+    // --- APLICA A IMAGEM DE RESERVA QUANDO A IMAGEM ORIGINAL FALHA AO CARREGAR ---
     function aplicarImagemReserva(imagem) {
         if (imagem.dataset.imagemReserva === "desligada" || imagem.dataset.reservaAplicada === "true") {
             return;
@@ -277,6 +295,7 @@
         imagem.closest("[data-moldura-imagem]")?.classList.add("imagem-ausente");
     }
 
+    // --- REGISTRA O TRATAMENTO DE ERROS DE CARREGAMENTO DAS IMAGENS DA PÁGINA ---
     function inicializarImagemReserva() {
         document.addEventListener(
             "error",
@@ -294,6 +313,7 @@
         });
     }
 
+    // --- INICIALIZA O CABEÇALHO E A BARRA DE PROGRESSO DE ROLAGEM ---
     function inicializarCabecalho() {
         const cabecalho = selecionarElemento("[data-cabecalho]");
         if (!cabecalho) {
@@ -302,6 +322,7 @@
         const progresso = selecionarElemento("[data-progresso-rolagem]", cabecalho);
         let atualizacaoAgendada = false;
 
+        // --- ATUALIZA O ESTADO DO CABEÇALHO E O PROGRESSO DA ROLAGEM ---
         const atualizar = () => {
             const posicaoRolagem = window.scrollY;
             cabecalho.classList.toggle("esta-rolado", posicaoRolagem > 24);
@@ -326,6 +347,7 @@
         atualizar();
     }
 
+    // --- MARCA O LINK DE NAVEGAÇÃO CORRESPONDENTE À PÁGINA ATUAL ---
     function marcarLinksNavegacaoAtivos() {
         const pagina = corpo.dataset.pagina;
         selecionarTodosElementos("[data-link-navegacao]").forEach((link) => {
@@ -335,6 +357,7 @@
         });
     }
 
+    // --- INICIALIZA O MENU DE NAVEGAÇÃO ---
     function inicializarNavegacao() {
         marcarLinksNavegacaoAtivos();
         const botaoAlternar = selecionarElemento("[data-alternar-menu]");
@@ -347,6 +370,7 @@
         const telaGrande = window.matchMedia("(min-width: 900px)");
         const areasExternas = selecionarTodosElementos("main, footer");
 
+        // --- DEFINE SE O MENU ESTÁ ABERTO OU FECHADO E CONTROLA O FOCO ---
         const definirAberto = (aberto, { devolverFoco = true } = {}) => {
             botaoAlternar.setAttribute("aria-expanded", String(aberto));
             if (rotulo) {
@@ -366,6 +390,7 @@
             }
         };
 
+        // --- VERIFICA SE O MENU ESTÁ ABERTO ---
         const estaAberto = () => navegacao.classList.contains("esta-aberto");
 
         botaoAlternar.addEventListener("click", () => definirAberto(!estaAberto()));
@@ -386,6 +411,7 @@
         });
     }
 
+    // --- PREENCHE O ANO ATUAL NO RODAPÉ ---
     function inicializarAnoRodape() {
         const ano = String(new Date().getFullYear());
         selecionarTodosElementos("[data-ano-atual]").forEach((elemento) => {
@@ -393,6 +419,7 @@
         });
     }
 
+    // --- CONFIGURA OS BOTÕES DE VOLTAR AO TOPO DA PÁGINA ---
     function inicializarVoltarAoTopo() {
         selecionarTodosElementos("[data-voltar-ao-topo]").forEach((botao) => {
             botao.addEventListener("click", () => {
@@ -402,6 +429,7 @@
         });
     }
 
+    // --- PREENCHE O NOME DO FOTÓGRAFO NOS ELEMENTOS DA PÁGINA ---
     function inicializarNomeFotografo() {
         if (!possuiValor(CONFIGURACAO.nomeFotografo)) {
             return;
@@ -412,11 +440,13 @@
         });
     }
 
+    // --- OBTÉM E VALIDA O E-MAIL DE CONTATO DA CONFIGURAÇÃO ---
     function obterEmailContato() {
         const email = possuiValor(CONFIGURACAO.emailContato) ? String(CONFIGURACAO.emailContato).trim() : "";
         return /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(email) ? email : "";
     }
 
+    // --- CONFIGURA OS LINKS DE CONTATO POR E-MAIL (MAILTO) ---
     function inicializarLinksContato() {
         const email = obterEmailContato();
         selecionarTodosElementos("[data-email-contato]").forEach((link) => {
@@ -441,6 +471,7 @@
         });
     }
 
+    // --- RENDERIZA A LISTA DE LINKS DAS REDES SOCIAIS ---
     function inicializarRedesSociais() {
         const listas = selecionarTodosElementos("[data-lista-redes-sociais]");
         if (!listas.length) {
@@ -480,6 +511,7 @@
     /* --- ANIMAÇÕES DE ENTRADA --- */
     let observadorRevelacao = null;
 
+    // --- INICIALIZA O OBSERVADOR DAS ANIMAÇÕES DE REVELAÇÃO ---
     function inicializarRevelacao() {
         if ("IntersectionObserver" in window && !movimentoReduzido.matches) {
             raiz.classList.add("possui-revelacao");
@@ -499,6 +531,7 @@
         observarRevelacao(selecionarTodosElementos("[data-revelar]"));
     }
 
+    // --- OBSERVA OS ELEMENTOS PARA APLICAR A ANIMAÇÃO DE REVELAÇÃO ---
     function observarRevelacao(elementos) {
         elementos.forEach((elemento) => {
             if (observadorRevelacao) {
@@ -509,6 +542,7 @@
         });
     }
 
+    // --- CALCULA E EXIBE AS ESTATÍSTICAS DA GALERIA ---
     function inicializarEstatisticas() {
         const valores = {
             fotografias: FOTOGRAFIAS.length,
@@ -535,6 +569,7 @@
         });
     }
 
+    // --- CRIA O ITEM DE FOTOGRAFIA EM DESTAQUE ---
     function criarItemDestaque(fotografia, indice) {
         const imagem = criarImagemFotografia(fotografia, "item-destaque__imagem");
         const botao = criarElemento(
@@ -566,6 +601,7 @@
         return botao;
     }
 
+    // --- RENDERIZA AS FOTOGRAFIAS EM DESTAQUE E CONFIGURA A AMPLIAÇÃO ---
     function inicializarDestaques(visualizadorAmpliado) {
         const grade = selecionarElemento("[data-grade-destaques]");
         if (!grade) {
@@ -604,6 +640,7 @@
         });
     }
 
+    // --- CRIA O VISUALIZADOR AMPLIADO DE FOTOGRAFIAS ---
     function criarVisualizadorAmpliado() {
         let dialogo = null;
         let referencias = {};
@@ -613,6 +650,7 @@
         let temporizadorFechamento = 0;
         let inicioToque = null;
 
+        // --- CONSTRÓI A ESTRUTURA HTML DO VISUALIZADOR AMPLIADO ---
         function construir() {
             referencias.imagem = criarElemento("img", {
                 classe: "visualizador-ampliado__imagem",
@@ -751,6 +789,7 @@
             vincularEventos();
         }
 
+        // --- VINCULA OS EVENTOS DE CLIQUE, TECLADO E TOQUE DO VISUALIZADOR ---
         function vincularEventos() {
             referencias.fechar.addEventListener("click", solicitarFechamento);
             referencias.anterior.addEventListener("click", () => mudarFotografia(-1));
@@ -823,6 +862,7 @@
             );
         }
 
+        // --- CONSTRÓI AS LINHAS DE METADADOS DA FOTOGRAFIA ---
         function construirLinhasMetadados(fotografia) {
             return CAMPOS_METADADOS.filter(([chave]) => possuiValor(fotografia[chave])).map(([chave, rotulo]) =>
                 criarElemento("div", { classe: "visualizador-ampliado__linha-metadados" }, [
@@ -834,6 +874,7 @@
             );
         }
 
+        // --- RENDERIZA A FOTOGRAFIA ATUAL E SUAS INFORMAÇÕES NO VISUALIZADOR ---
         function renderizar() {
             const fotografia = itens[indiceAtual];
             const origem = resolverImagem(fotografia.imagem);
@@ -877,6 +918,7 @@
             preCarregarVizinhas();
         }
 
+        // --- PRÉ-CARREGA AS FOTOGRAFIAS ANTERIOR E PRÓXIMA ---
         function preCarregarVizinhas() {
             if (itens.length < 2) {
                 return;
@@ -890,6 +932,7 @@
             });
         }
 
+        // --- NAVEGA PARA A FOTOGRAFIA ANTERIOR OU PRÓXIMA ---
         function mudarFotografia(deslocamento) {
             if (itens.length < 2) {
                 return;
@@ -898,6 +941,7 @@
             renderizar();
         }
 
+        // --- ABRE O VISUALIZADOR AMPLIADO NA FOTOGRAFIA INFORMADA ---
         function abrir(lista, indice, elementoAcionadorRecebido) {
             if (!Array.isArray(lista) || !lista.length) {
                 return;
@@ -926,6 +970,7 @@
             referencias.fechar.focus();
         }
 
+        // --- SOLICITA O FECHAMENTO DO VISUALIZADOR COM ANIMAÇÃO ---
         function solicitarFechamento() {
             if (!dialogo || !dialogo.open) {
                 return;
@@ -940,6 +985,7 @@
             temporizadorFechamento = window.setTimeout(() => dialogo.close(), 220);
         }
 
+        // --- LIMPA O ESTADO APÓS O FECHAMENTO E DEVOLVE O FOCO AO ACIONADOR ---
         function limparFechamento() {
             window.clearTimeout(temporizadorFechamento);
             dialogo.classList.remove("esta-fechando");
@@ -953,6 +999,7 @@
         return { abrir };
     }
 
+    // --- CRIA O CARTÃO DE FOTOGRAFIA DA GALERIA ---
     function criarItemGaleria(fotografia, indice) {
         const imagem = criarImagemFotografia(fotografia, "cartao-fotografia__imagem", {
             carregamentoImediato: indice < 4,
@@ -1005,6 +1052,7 @@
         return item;
     }
 
+    // --- INICIALIZA A GALERIA COM FILTROS, PESQUISA E SINCRONIZAÇÃO COM A URL ---
     function inicializarGaleria(visualizadorAmpliado) {
         const grade = selecionarElemento("[data-grade-galeria]");
         if (!grade) {
@@ -1057,6 +1105,7 @@
         vincularEventos();
         atualizar({ sincronizarUrl: false });
 
+        // --- RENDERIZA OS BOTÕES DE FILTRO POR CATEGORIA ---
         function renderizarFiltros() {
             if (!elementosInterface.filtros) {
                 return;
@@ -1084,6 +1133,7 @@
             );
         }
 
+        // --- RENDERIZA AS OPÇÕES DE FILTRO POR FABRICANTE ---
         function renderizarFabricantes() {
             if (!elementosInterface.fabricante) {
                 return;
@@ -1096,6 +1146,7 @@
             elementosInterface.fabricante.disabled = fabricantes.length === 0;
         }
 
+        // --- VINCULA OS EVENTOS DOS FILTROS, DA PESQUISA E DA GRADE ---
         function vincularEventos() {
             elementosInterface.filtros?.addEventListener("click", (evento) => {
                 const botao = evento.target.closest("[data-categoria]");
@@ -1136,10 +1187,12 @@
             });
         }
 
+        // --- VERIFICA SE EXISTEM FILTROS ATIVOS ---
         function possuiFiltrosAtivos() {
             return estado.categoria !== "todas" || estado.fabricante !== "" || estado.consulta.trim() !== "";
         }
 
+        // --- APLICA OS FILTROS E ATUALIZA A GALERIA ---
         function atualizar({ sincronizarUrl = true } = {}) {
             const termos = converterEmTermosPesquisa(estado.consulta);
             visiveis = FOTOGRAFIAS.filter(
@@ -1156,6 +1209,7 @@
             }
         }
 
+        // --- SINCRONIZA O ESTADO DOS CONTROLES DE FILTRO ---
         function sincronizarControles() {
             selecionarTodosElementos(
                 "[data-categoria]",
@@ -1176,6 +1230,7 @@
             });
         }
 
+        // --- RENDERIZA A GRADE DE FOTOGRAFIAS OU A MENSAGEM DE VAZIO ---
         function renderizarGrade() {
             grade.replaceChildren(...visiveis.map(criarItemGaleria));
             grade.hidden = visiveis.length === 0;
@@ -1206,6 +1261,7 @@
             });
         }
 
+        // --- ATUALIZA O TEXTO DE STATUS COM A QUANTIDADE EXIBIDA ---
         function renderizarStatus() {
             if (!elementosInterface.status) {
                 return;
@@ -1223,8 +1279,11 @@
             }
         }
 
+        // --- SINCRONIZA O ESTADO DOS FILTROS NOS PARÂMETROS DA URL ---
         function sincronizarEstadoNaUrl() {
             const url = new URL(window.location.href);
+            
+            // --- DEFINE OU REMOVE UM PARÂMETRO DA URL ---
             const definirParametro = (chave, valor) => {
                 if (valor) {
                     url.searchParams.set(chave, valor);
@@ -1244,6 +1303,7 @@
             }
         }
 
+        // --- LIMPA TODOS OS FILTROS DA GALERIA ---
         function limpar() {
             estado.categoria = "todas";
             estado.fabricante = "";
@@ -1256,6 +1316,7 @@
         }
     }
 
+    // --- INICIALIZA AS PERGUNTAS FREQUENTES COM ACORDEÃO, PESQUISA E FILTROS ---
     function inicializarPerguntasFrequentes() {
         const conteiner = selecionarElemento("[data-perguntas-frequentes]");
         if (!conteiner) {
@@ -1302,6 +1363,7 @@
         aplicarFiltros();
         abrirPeloHash();
 
+        // --- CONFIGURA OS ATRIBUTOS DE ACESSIBILIDADE E PESQUISA DE CADA PERGUNTA ---
         function configurarItem(item, indice) {
             const gatilho = selecionarElemento(".item-pergunta__gatilho", item);
             const painel = selecionarElemento(".item-pergunta__painel", item);
@@ -1329,6 +1391,7 @@
             item.dataset.textoPesquisa = normalizarTexto(`${item.textContent} ${item.dataset.palavrasChave || ""}`);
         }
 
+        // --- DEFINE SE A PERGUNTA ESTÁ ABERTA OU FECHADA ---
         function definirEstadoItem(item, aberto) {
             const gatilho = selecionarElemento(".item-pergunta__gatilho", item);
             if (!gatilho) {
@@ -1338,12 +1401,14 @@
             item.classList.toggle("esta-aberto", aberto);
         }
 
+        // --- ALTERNA O ESTADO ABERTO/FECHADO DA PERGUNTA ---
         function alternarItem(item) {
             if (item) {
                 definirEstadoItem(item, !item.classList.contains("esta-aberto"));
             }
         }
 
+        // --- TRATA A NAVEGAÇÃO POR TECLADO ENTRE AS PERGUNTAS ---
         function tratarTeclado(evento) {
             const gatilho = evento.target.closest(".item-pergunta__gatilho");
             if (!gatilho) {
@@ -1371,6 +1436,7 @@
             alvo.focus();
         }
 
+        // --- APLICA A PESQUISA E O FILTRO DE CATEGORIA NAS PERGUNTAS ---
         function aplicarFiltros() {
             const termos = converterEmTermosPesquisa(campoPesquisa?.value);
             let total = 0;
@@ -1409,6 +1475,7 @@
             }
         }
 
+        // --- LIMPA A PESQUISA E OS FILTROS DAS PERGUNTAS ---
         function limpar() {
             categoriaAtiva = "todas";
             if (campoPesquisa) {
@@ -1418,6 +1485,7 @@
             campoPesquisa?.focus();
         }
 
+        // --- ABRE A PERGUNTA INDICADA NO HASH DA URL ---
         function abrirPeloHash() {
             const identificador = decodeURIComponent(window.location.hash.slice(1));
             if (!identificador) {
@@ -1438,6 +1506,7 @@
         }
     }
 
+    // --- DESTACA O LINK DO SUMÁRIO CORRESPONDENTE À SEÇÃO VISÍVEL ---
     function inicializarSumarioAtivo() {
         const navegacao = selecionarElemento("[data-sumario-ativo]");
         if (!navegacao || !("IntersectionObserver" in window)) {
@@ -1456,6 +1525,7 @@
             return;
         }
 
+        // --- DEFINE O LINK ATIVO DO SUMÁRIO ---
         const definirAtivo = (linkAtivo) => {
             links.forEach((link) => {
                 const ehAtivo = link === linkAtivo;
@@ -1481,6 +1551,7 @@
         secoes.forEach((_, secao) => observador.observe(secao));
     }
 
+    // --- INICIALIZA TODOS OS MÓDULOS DO SITE ---
     function inicializar() {
         raiz.classList.add("javascript-ativo");
         
